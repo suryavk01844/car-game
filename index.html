@@ -62,7 +62,7 @@ const TH=[{n:'NEON HARBOR',sky:['#07041a','#3b1c63','#ff4fa3'],fog:0x1a0f3a,fd:.
 {n:'SUNSET COAST',sky:['#2a78d8','#ff9e5e','#ffe08a'],fog:0xf0b078,fd:.0022,sun:0xffb070,rain:0,ground:0xdcbc80,neon:[0xffffff,0xff8a2b],lamp:0xfff2c0,mk:()=>mk(175,.24,.14,0,.5)}];
 let S={car:0,paint:PAINT[0],up:[0,0,0],cr:0,track:0},state='menu',R,scene,cam,sun,hemi,W,pts,tg,rt,NS=480,HW=9,L,ds,cars=[],keys={},T=0,shake=0,tCount=0,tRace=0,tFin=0,rain,smoke,spark,mmBg,th,AC,eng,dpr;
 try{try{R=new THREE.WebGLRenderer({canvas:$('c'),antialias:true,powerPreference:'high-performance'})}catch(e){R=new THREE.WebGLRenderer({canvas:$('c')})}}catch(e){R=null}
-if(R){$('err').classList.remove('on');init()}
+
 function mk(R0,a1,a2,p1,p2){const p=[];for(let i=0;i<14;i++){const t=i/14*6.2832,r=R0*(1+a1*Math.sin(2*t+p1)+a2*Math.sin(3*t+p2));p.push(new THREE.Vector3(Math.cos(t)*r,0,Math.sin(t)*r*.8))}return new THREE.CatmullRomCurve3(p,true)}
 function cvs(w,h,f){const c=document.createElement('canvas');c.width=w;c.height=h;f(c.getContext('2d'),w,h);return c}
 function tex(c){const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=8;return t}
@@ -71,7 +71,8 @@ const dotT=()=>tex(cvs(32,32,(g)=>{const r=g.createRadialGradient(16,16,0,16,16,
 class P{constructor(n,size,col,add,op){this.n=n;this.p=new Float32Array(n*3).fill(-999);this.v=new Float32Array(n*3);this.l=new Float32Array(n);this.i=0;const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(this.p,3));this.o=new THREE.Points(g,new THREE.PointsMaterial({size,color:col,map:dotT(),transparent:true,depthWrite:false,opacity:op,blending:add?THREE.AdditiveBlending:THREE.NormalBlending}));this.o.frustumCulled=false}
 e(x,y,z,vx,vy,vz,l){const i=this.i++%this.n;this.p.set([x,y,z],i*3);this.v.set([vx,vy,vz],i*3);this.l[i]=l}
 u(dt,gr){for(let i=0;i<this.n;i++){if(this.l[i]>0){this.l[i]-=dt;for(let k=0;k<3;k++)this.p[i*3+k]+=this.v[i*3+k]*dt;this.v[i*3+1]-=gr*dt;if(this.l[i]<=0)this.p[i*3+1]=-999}}this.o.geometry.attributes.position.needsUpdate=true}}
-function init(){
+if(R){$('err').classList.remove('on');init()}         
+  function init(){
 scene=new THREE.Scene();cam=new THREE.PerspectiveCamera(65,1,.5,1800);dpr=Math.min(devicePixelRatio,2);R.setPixelRatio(dpr);R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.1;R.outputEncoding=THREE.sRGBEncoding;
 sun=new THREE.DirectionalLight(0xffffff,1.3);sun.position.set(-200,160,-120);scene.add(sun);hemi=new THREE.HemisphereLight(0x8899ff,0x221133,.6);scene.add(hemi);
 smoke=new P(500,4,0xcccccc,false,.28);spark=new P(400,.8,0xffa040,true,1);scene.add(smoke.o,spark.o);
